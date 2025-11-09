@@ -1,8 +1,7 @@
-// components/Start.js
-// --- STEP 3: Create new file Start.js file add the following code. ---
 // Import necessary components
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+// ADD KeyBoardAvoidingView and Platform to imports
+import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 
 const Start = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -36,27 +35,44 @@ const Start = ({ navigation }) => {
                     value={name}
                     onChangeText={setName}
                     placeholder='Your name'
-                    placeholderTextColor="#090C08" // Style the placeholder text
+                    placeholderTextColor="#757083" // Style the placeholder text
                 />
 
                 {/* ADD section for choosing background color */}
+                {/* ADD Accessibilty Props to the color section buttons */}
                 <Text style={styles.chooseColorText}>Choose background color:</Text>
                 <View style={styles.colorSelector}>
                     <TouchableOpacity
                         style={[styles.colorCircle, { backgroundColor: colors.black }]}
                         onPress={() => setColor(colors.black)}
+                        accessible = {true}
+                        accessibilityLabel="Black color"
+                        accessibilityHint="Selects black as the background color for the chat screen."
+                        accessibilityRole="button"
                     />
                     <TouchableOpacity
                         style={[styles.colorCircle, { backgroundColor: colors.purple }]}
                         onPress={() => setColor(colors.purple)}
+                        accessible = {true}
+                        accessibilityLabel="Purple color"
+                        accessibilityHint="Selects purple as the background color for the chat screen."
+                        accessibilityRole="button"
                     />
                     <TouchableOpacity
                         style={[styles.colorCircle, { backgroundColor: colors.grey }]}
                         onPress={() => setColor(colors.grey)}
+                        accessible={true}
+                        accessibilityLabel="Grey color"
+                        accessibilityHint="Selects grey as the background color for the chat screen."
+                        accessibilityRole="button"
                     />
                     <TouchableOpacity
                         style={[styles.colorCircle, { backgroundColor: colors.green }]}
                         onPress={() => setColor(colors.green)}
+                        accessible={true}
+                        accessibilityLabel="Green color"
+                        accessibilityHint="Selects green as the background color for the chat screen."
+                        accessibilityRole="button"
                     />
                 </View>
 
@@ -65,10 +81,17 @@ const Start = ({ navigation }) => {
                     style={styles.startButton}
                     // UPDATE onPress to pass both name AND color to the Chat screen
                     onPress={() => navigation.navigate('Chat', { name: name, color: color })}
+                    accessible={true}
+                    accessibilityLabel="Start chatting"
+                    accessibilityHint="Navigates to the chat screen"
+                    accessibilityRole="button"
                 >
                     <Text style={styles.startButtonText}>Start Chatting</Text>
                 </TouchableOpacity>
             </View>
+
+            { /* ADD KeyBoardAvoidingView specifically for iOS */}
+            {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
         </ImageBackground>
     );
 }
@@ -96,10 +119,10 @@ const styles = StyleSheet.create({
         width: "100%",
         padding: 15,
         borderWidth: 1,
-        borderColor: '#090C08',
+        borderColor: '#757083',
         fontSize: 16,
         fontWeight: '300',
-        color: '#090C08',
+        color: '#757083',
         opacity: 0.5,
         marginBottom: 15,
     },
@@ -110,28 +133,28 @@ const styles = StyleSheet.create({
         opacity: 1,
         marginBottom: 10,
     },
-     colorSelector: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    marginBottom: 20,
-  },
-  colorCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25, // Half of width/height to make it a circle
-  },
-  startButton: {
-    backgroundColor: '#757083',
-    width: '100%',
-    padding: 20,
-    alignItems: 'center',
-  },
-  startButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  }
+    colorSelector: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '80%',
+        marginBottom: 20,
+    },
+    colorCircle: {
+        width: 50,
+        height: 50,
+        borderRadius: 25, // Half of width/height to make it a circle
+    },
+    startButton: {
+        backgroundColor: '#757083',
+        width: '100%',
+        padding: 20,
+        alignItems: 'center',
+    },
+    startButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#FFFFFF',
+    }
 });
 
 export default Start;
