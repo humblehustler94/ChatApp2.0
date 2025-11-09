@@ -1,136 +1,116 @@
 // components/Start.js
-// --- STEP 3: Create new file Start.js file add the following code. ---
-// Import necessary components
+
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 
 const Start = ({ navigation }) => {
-    const [name, setName] = useState('');
-    // ADD state for the choosen background color.
-    const [color, setColor] = useState('');
+  const [name, setName] = useState('');
+  const [color, setColor] = useState('');
 
-    // Define the color choices from your design specifications
-    const colors = {
-        black: '#090C08',
-        purple: '#474056',
-        grey: '#8A95A5',
-        green: '#B9C6AE'
-    };
+  const image = require('../assets/background-image.png');
 
-
-    return (
-        // ADD ImageBackground to use an image as the screen background
-        <ImageBackground
-            source={require('../assets/background-image.png')} // Make sure you have this image in an 'assets' folder
-            resizeMode="cover"
-            style={styles.backgroundImage}
+  return (
+    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+      <Text style={styles.title}>Chat App</Text>
+      <View style={styles.box}>
+        {/* Wrap the input and color choices in KeyboardAvoidingView */}
+        <KeyboardAvoidingView
+          style={styles.keyboardAvoidingView}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            {/* ADD the App Title */}
-            <Text style={styles.appTitle}>ChatApp</Text>
-
-            {/* ADD a container for the user inputs */}
-            <View style={styles.inputContainer}>
-                {/* Your Name TextInput - Apply new styles */}
-                <TextInput
-                    style={styles.textInput}
-                    value={name}
-                    onChangeText={setName}
-                    placeholder='Your name'
-                    placeholderTextColor="#090C08" // Style the placeholder text
-                />
-
-                {/* ADD section for choosing background color */}
-                <Text style={styles.chooseColorText}>Choose background color:</Text>
-                <View style={styles.colorSelector}>
-                    <TouchableOpacity
-                        style={[styles.colorCircle, { backgroundColor: colors.black }]}
-                        onPress={() => setColor(colors.black)}
-                    />
-                    <TouchableOpacity
-                        style={[styles.colorCircle, { backgroundColor: colors.purple }]}
-                        onPress={() => setColor(colors.purple)}
-                    />
-                    <TouchableOpacity
-                        style={[styles.colorCircle, { backgroundColor: colors.grey }]}
-                        onPress={() => setColor(colors.grey)}
-                    />
-                    <TouchableOpacity
-                        style={[styles.colorCircle, { backgroundColor: colors.green }]}
-                        onPress={() => setColor(colors.green)}
-                    />
-                </View>
-
-                {/* CHANGE the Button to a styled TouchableOpacity */}
-                <TouchableOpacity
-                    style={styles.startButton}
-                    // UPDATE onPress to pass both name AND color to the Chat screen
-                    onPress={() => navigation.navigate('Chat', { name: name, color: color })}
-                >
-                    <Text style={styles.startButtonText}>Start Chatting</Text>
-                </TouchableOpacity>
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={setName}
+            placeholder='Your Name'
+          />
+          <View>
+            <Text style={styles.chooseColorText}>Choose Background Color:</Text>
+            <View style={styles.colorSelector}>
+              <TouchableOpacity style={[styles.colorCircle, { backgroundColor: '#090C08' }]} onPress={() => setColor('#090C08')} />
+              <TouchableOpacity style={[styles.colorCircle, { backgroundColor: '#474056' }]} onPress={() => setColor('#474056')} />
+              <TouchableOpacity style={[styles.colorCircle, { backgroundColor: '#8A95A5' }]} onPress={() => setColor('#8A95A5')} />
+              <TouchableOpacity style={[styles.colorCircle, { backgroundColor: '#B9C6AE' }]} onPress={() => setColor('#B9C6AE')} />
             </View>
-        </ImageBackground>
-    );
+          </View>
+        </KeyboardAvoidingView>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Chat', { name: name, color: color })}
+        >
+          <Text style={styles.buttonText}>Start Chatting</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
+  );
 }
 
-// ADD all the styles from the design specifications
 const styles = StyleSheet.create({
-
-    backgroundImage: {
-        flex: 1,
-        justifyContent: 'space-evenly', // Evenly distribute content vertically
-        alignItems: 'center',
-    },
-    appTitle: {
-        fontSize: 45,
-        fontWeight: '600',
-        color: '#FFFFFF',
-    },
-    inputContainer: {
-        backgroundColor: 'white',
-        width: '88%',
-        alignItems: 'center',
-        padding: '6%',
-    },
-    textInput: {
-        width: "100%",
-        padding: 15,
-        borderWidth: 1,
-        borderColor: '#090C08',
-        fontSize: 16,
-        fontWeight: '300',
-        color: '#090C08',
-        opacity: 0.5,
-        marginBottom: 15,
-    },
-    chooseColorText: {
-        fontSize: 16,
-        fontWeight: '300',
-        color: '#757083',
-        opacity: 1,
-        marginBottom: 10,
-    },
-     colorSelector: {
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 45,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 'auto',
+    marginTop: 60,
+  },
+  box: {
+    backgroundColor: '#FFFFFF',
+    width: '88%',
+    height: '44%',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+    paddingVertical: 20,
+  },
+  keyboardAvoidingView: {
+    width: '88%',
+    alignItems: 'center',
+  },
+  textInput: {
+    width: '100%',
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#757083',
+    fontSize: 16,
+    fontWeight: '300',
+    color: '#757083',
+    opacity: 0.5,
+    marginBottom: 15,
+  },
+  chooseColorText: {
+    fontSize: 16,
+    fontWeight: '300',
+    color: '#757083',
+    opacity: 1,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  colorSelector: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '80%',
-    marginBottom: 20,
   },
   colorCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25, // Half of width/height to make it a circle
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    margin: 5,
   },
-  startButton: {
+  button: {
     backgroundColor: '#757083',
-    width: '100%',
+    width: '88%',
     padding: 20,
     alignItems: 'center',
   },
-  startButtonText: {
+  buttonText: {
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
   }
 });
 
